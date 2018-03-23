@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "122967728914",
+    "firebase_url": "https://andriodproject-4ce24.firebaseio.com",
+    "project_id": "andriodproject-4ce24",
+    "storage_bucket": "andriodproject-4ce24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122967728914:android:633d497ec5494b68",
+        "android_client_info": {
+          "package_name": "com.example.marwa.androidproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122967728914-aempj7t2ktmk08q9pna47nmdckh98a40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbGm0jXCbn3hUrla8NTzoMOgIaIzDpcGw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
