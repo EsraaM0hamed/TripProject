@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">androidProject</string>
+    <string name="tripName">tripName</string>
+    <string name="startPoint" />
+    <string name="Notes" />
+    <string name="TripType" />
+    <string name="AddTrip">AddTrip</string>
+    <string name="Date" />
+    <string name="title_activity_main">MainActivity</string>
 </resources>
