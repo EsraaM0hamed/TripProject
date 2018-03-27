@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,12 +31,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends Activity {
+import static android.content.ContentValues.TAG;
+
+public class MainActivity extends AppCompatActivity {
     Intent intent;
+
     TextView name,type;
     ArrayList<Trip> TripList = new ArrayList<>();
     TripAdapter adapter;
     DatabaseReference ref;
+    RecyclerView  recyclerView;
+    RecyclerView.LayoutManager manger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,24 +51,15 @@ public class MainActivity extends Activity {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         ref = database.getReference();
-        //ref = database.getReference("server/saving-data/fireblog/posts");
-
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cardList);
-        recyclerView.setHasFixedSize(true);
-
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         adapter = new TripAdapter(MainActivity.this,TripList);
-
-        RecyclerView.LayoutManager manger = new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(manger);
-        recyclerView.setAdapter(adapter);
-
-
-        ref.child("trip").addValueEventListener(new ValueEventListener() {
+        manger = new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false);
+       // prepareMovieData();
+        ref.child("trips").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                name.setText(dataSnapshot.getValue().toString());
-                TripList.clear();
+                Log.i(TAG, dataSnapshot.getValue().toString());
+             TripList.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Trip trip  = snapshot.getValue(Trip.class);
@@ -69,36 +68,20 @@ public class MainActivity extends Activity {
                     Toast.makeText(MainActivity.this, snapshot.toString(), Toast.LENGTH_SHORT).show();
                 }
 
-                Collections.reverse(TripList);
+                recyclerView.setLayoutManager(manger);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(adapter);
 
+                 Collections.reverse(TripList);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.i(TAG, "onCancelled: cancel");
 
             }
         });
-
-
-
-
-
-
-
-
-       /* RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-        recList.setHasFixedSize(true);
-        recList.setLayoutManager(new LinearLayoutManager(this));
-
-
-
-
-       /* TripAdapter ca = new TripAdapter(TripList);
-        recList.setAdapter(ca);
-*/
-
-
-        intent=new Intent(this,MainActivity.class);
+        intent=new Intent(this,Main2Activity.class);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +99,11 @@ public class MainActivity extends Activity {
 
 
 
-
+  /*  private void prepareMovieData() {
+        Trip movie = new Trip("ant", "personal", "2015","hhhh","cairo","egypt");
+       TripList.add(movie);
+        Trip movie2 = new Trip("ant", "personal", "2015","hhhh","cairo","egypt");
+        TripList.add(movie2);
+    }*/
 
 }

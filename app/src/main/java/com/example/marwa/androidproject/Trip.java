@@ -12,7 +12,20 @@ public class Trip {
     private String tripType;
     private String date;
 
+    public Trip() {
+    }
+
+    public Trip(String tripName, String tripType, String date,String notes,String startPoint,String endPoint) {
+        this.tripType = tripType;
+        this.tripName = tripName;
+        this.notes = notes;
+        this.date = date;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+    }
+
     public String getTripName() {
+
         return tripName;
     }
     public void setTripName(String name) {

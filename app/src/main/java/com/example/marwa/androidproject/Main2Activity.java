@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-public class Main2Activity extends Activity implements AdapterView.OnItemSelectedListener {
+public class Main2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     DatabaseReference ref;
     EditText tripName;
     EditText Notes;
