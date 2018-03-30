@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         name=findViewById(R.id.tripname);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         ref = database.getReference();
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         adapter = new TripAdapter(MainActivity.this,TripList);
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
                     Trip trip  = snapshot.getValue(Trip.class);
                     TripList.add(trip);
                     adapter.notifyDataSetChanged();
-                    Toast.makeText(MainActivity.this, snapshot.toString(), Toast.LENGTH_SHORT).show();
                 }
 
                 recyclerView.setLayoutManager(manger);
@@ -99,11 +99,5 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-  /*  private void prepareMovieData() {
-        Trip movie = new Trip("ant", "personal", "2015","hhhh","cairo","egypt");
-       TripList.add(movie);
-        Trip movie2 = new Trip("ant", "personal", "2015","hhhh","cairo","egypt");
-        TripList.add(movie2);
-    }*/
 
 }

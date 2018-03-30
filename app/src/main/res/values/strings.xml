@@ -7,4 +7,7 @@
     <string name="AddTrip">AddTrip</string>
     <string name="Date" />
     <string name="title_activity_main">MainActivity</string>
+    <string name="Edit" />
+    <string name="Delete" />
+    <string name="Start" />
 </resources>

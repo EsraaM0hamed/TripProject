@@ -5,7 +5,11 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -37,18 +41,20 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
     static EditText DateEdit;    //TextClock tc;
     Button addTrip;
     Trip tr;
+
     private PlaceAutocompleteFragment autocompleteFragment;
     private PlaceAutocompleteFragment autocompleteFragment1;
-
+    int id=0;
     String start;
     String end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main2);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        ref = database.getReference();
+        ref = database.getReference("trips");
 
         spinner = (Spinner)findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Main2Activity.this,
@@ -110,12 +116,26 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
 
 
 
-        //tc=findViewById(R.id.clock);
+        final Intent intent=new Intent(this,MainActivity.class);
         addTrip.setOnClickListener(new View.OnClickListener() {
             @Override
 
             public void onClick(View view) {
+               /* if(tripName.getText().toString()==""){
+                    AlertDialog alertDialog = new AlertDialog.Builder(Main2Activity.this).create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.setMessage("Alert message to be shown");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }*/
+
                 tr=new Trip();
+                tr.setId(id++);
                 tr.setTripName(tripName.getText().toString());
                 tr.setTripType(type);
                 tr.setNotes(Notes.getText().toString());
@@ -124,7 +144,10 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
                 tr.setDate(DateEdit.getText().toString());
 
 
-                ref.child("trips").push().setValue(tr);
+                ref.child(tripName.getText().toString()).setValue(tr);
+                ActivityCompat.finishAffinity(Main2Activity.this);
+                startActivity(intent);
+
 
             }
 
@@ -200,7 +223,7 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             // Do something with the time chosen by the user
-            DateEdit.setText(DateEdit.getText() + " -" + hourOfDay + ":"	+ minute);
+            DateEdit.setText(DateEdit.getText() + "-" + hourOfDay + ":"+ minute);
         }
     }
 

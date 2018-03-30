@@ -15,7 +15,8 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/cardview_light_background" />
+            android:background="@color/cardview_light_background"
+            android:backgroundTint="@color/place_autocomplete_search_hint" />
 
 
     <android.support.design.widget.FloatingActionButton
