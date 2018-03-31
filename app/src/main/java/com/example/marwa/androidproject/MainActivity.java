@@ -116,11 +116,11 @@ public class MainActivity extends AppCompatActivity {
                             int interval = 1000 * 60 * 30;
                             Calendar calendar2 = Calendar.getInstance();
                             calendar2.setTimeInMillis(System.currentTimeMillis());
-                            calendar2.set(Calendar.DAY_OF_MONTH, Integer.parseInt(trip_day));
-                            calendar2.set(Calendar.MONTH, Integer.parseInt(trip_month));
-                            calendar2.set(Calendar.YEAR, Integer.parseInt(trip_year));
-                            calendar2.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip_hour));
-                            calendar2.set(Calendar.MINUTE, Integer.parseInt(trip_min));
+//                            calendar2.set(Calendar.DAY_OF_MONTH, Integer.parseInt(trip_day));
+//                            calendar2.set(Calendar.MONTH, Integer.parseInt(trip_month));
+//                            calendar2.set(Calendar.YEAR, Integer.parseInt(trip_year));
+                            calendar2.set(Calendar.HOUR_OF_DAY, 6);
+                            calendar2.set(Calendar.MINUTE, 40);
 
                             Intent i = new Intent(getApplicationContext(), AlramReciver.class);
                             SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
