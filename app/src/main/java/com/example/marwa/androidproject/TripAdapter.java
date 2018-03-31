@@ -2,6 +2,7 @@ package com.example.marwa.androidproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder>
     }
 
     @Override
-    public void onBindViewHolder(TripHolder  holder, int position) {
+    public void onBindViewHolder(final TripHolder  holder, int position) {
         final Trip student = tripList.get(position);
         holder.tripname.setText(student.getTripName());
         holder.tripdate.setText(student.getDate());
@@ -41,20 +42,24 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder>
         holder.triptype.setText(student.getTripType());
 
         holder.tripname.setText(student.getTripName() );
-       /* holder.editStudentBtn.setOnClickListener(new View.OnClickListener() {
+
+        holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, EditStudentActivity.class);
-                intent.putExtra("name", student.getName());
+                Intent intent = new Intent(context, details.class);
+                intent.putExtra("holder", tripList.toString());
                 context.startActivity(intent);
-            }*/
+            }
+            });
 
     }
 
     @Override
     public TripHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_row, parent, false);
         return new TripHolder(row);
+
         /*View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.activity_row, viewGroup, false);
@@ -69,6 +74,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder>
         protected TextView triptype;
         protected TextView tripdate;
         protected TextView tripnotes;
+        protected CardView card;
 
         public TripHolder(View v) {
             super(v);
@@ -76,6 +82,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder>
             triptype = (TextView)  v.findViewById(R.id.triptype);
             tripdate = (TextView)  v.findViewById(R.id.tripdate);
             tripnotes = (TextView) v.findViewById(R.id.tripnotes);
+            card=(CardView) v.findViewById(R.id.card);
         }
     }
 }

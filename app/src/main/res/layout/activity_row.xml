@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    card_view:cardCornerRadius="4dp"
-    android:layout_margin="5dp">
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/card"
+        >
 
         <TextView
             android:id="@+id/tripname"
             android:layout_width="match_parent"
             android:layout_height="20dp"
+            android:layout_alignLeft="@+id/triptype"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/triptype"
+            android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
             android:text="name"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/holo_red_dark"
             android:textSize="14dp" />
 
         <TextView
             android:id="@+id/triptype"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/tripnotes"
+            android:layout_alignLeft="@+id/tripnotes"
+            android:layout_marginLeft="10dp"
+            android:layout_alignRight="@+id/tripnotes"
+            android:layout_alignStart="@+id/tripnotes"
             android:layout_below="@id/tripname"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_vertical"
             android:text="type"
-            android:textSize="10dp" />
-
-        <TextView
-            android:id="@+id/tripnotes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/triptype"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:text="note"
             android:textSize="10dp" />
 
         <TextView
@@ -49,15 +49,48 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/tripnotes"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
             android:layout_marginRight="150dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="10dp"
+
             android:text="date"
             android:textSize="10dp" />
 
+        <TextView
+            android:id="@+id/tripnotes"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/triptype"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="40dp"
+
+            android:gravity="center_vertical"
+            android:text="note"
+            android:textSize="10dp" />
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
 
 
-    </RelativeLayout>
 
 
 
-</android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
