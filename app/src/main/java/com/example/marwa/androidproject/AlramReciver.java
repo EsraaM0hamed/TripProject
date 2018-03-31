@@ -41,6 +41,7 @@ Intent intent2;
 
 
         Toast.makeText(context, trip_name+" "+trip_note, Toast.LENGTH_SHORT).show();
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setContentTitle(trip_name);

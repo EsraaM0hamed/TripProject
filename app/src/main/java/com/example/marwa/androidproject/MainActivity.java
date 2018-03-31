@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -46,9 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String PREFS_NAME = "trip";
     Intent intent;
-
+boolean flag=false;
     TextView name,type;
     ArrayList<Trip> TripList = new ArrayList<>();
+    ArrayList<String> DatesList = new ArrayList<>();
     TripAdapter adapter;
     DatabaseReference ref;
     RecyclerView  recyclerView;
@@ -59,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Intent alarmIntent = new Intent(MainActivity.this, AlramReciver.class);
-        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, 0);
 
         name=findViewById(R.id.tripname);
 
@@ -78,68 +79,63 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, dataSnapshot.getValue().toString());
              TripList.clear();
 
+             
+             
+             //set alarm mnager take more than one alarm 
+               // AlarmManager[] alarmManager=new AlarmManager[24];
+               // ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
+                //**************
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Trip trip  = snapshot.getValue(Trip.class);
+                    Trip trip = snapshot.getValue(Trip.class);
                     TripList.add(trip);
+                    DatesList.add(trip.getDate());
                     adapter.notifyDataSetChanged();
-                    if (trip.getDate()!=null) {
 
 
-                        //split date
-                        String[] separated = trip.getDate().split("-");
-                        String trip_date = separated[0];
-                        String trip_time = separated[1];
-                        String[] time_seperated = trip_time.split(":");
-                        String[] date_seperated = trip_date.split("/");
-                        String trip_day = date_seperated[0];
-                        String trip_month = date_seperated[1];
-                        String trip_year = date_seperated[2];
+                 if (trip.getDate() != null) {
 
-                        String trip_hour = time_seperated[0];
-                        String trip_min = time_seperated[1];
+                     AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                     int interval = 1000 * 60 * 20;
 
 
-                        //to get time now
-                        DateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy");
-                        Date date = new Date();
-                        //System.out.println(dateFormat.format(date));
-                        DateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-                        Date strDate = null;
-                        Calendar calendar = Calendar.getInstance();
-                        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-                        int minOfDay = calendar.get(Calendar.MINUTE);
-
-                        String s = dateFormat.format(date).toString();
-
-                        //if (s.equals(trip_date)) {
-                            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                            int interval = 1000 * 60 * 30;
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTimeInMillis(System.currentTimeMillis());
-//                            calendar2.set(Calendar.DAY_OF_MONTH, Integer.parseInt(trip_day));
-//                            calendar2.set(Calendar.MONTH, Integer.parseInt(trip_month));
-//                            calendar2.set(Calendar.YEAR, Integer.parseInt(trip_year));
-                            calendar2.set(Calendar.HOUR_OF_DAY, 6);
-                            calendar2.set(Calendar.MINUTE, 40);
-
-                            Intent i = new Intent(getApplicationContext(), AlramReciver.class);
-                            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-                            editor.putString("Trip_name", trip.getTripName());
-                            editor.putString("Trip_context", trip.getNotes());
-                            editor.commit();
 
 
-                            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, i, 0);
 
-                            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
-                                    interval, pendingIntent);
+                            //split date
+                            String[] separated = trip.getDate().split("-");
+                            String trip_date = separated[0];
+                            String trip_time = separated[1];
+                            String[] time_seperated = trip_time.split(":");
+                            String[] date_seperated = trip_date.split("/");
+                            String trip_day = date_seperated[0];
+                            String trip_month = date_seperated[1];
+                            String trip_year = date_seperated[2];
+
+                            String trip_hour = time_seperated[0];
+                            String trip_min = time_seperated[1];
 
 
-                        //}
+
+                     SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+                     editor.putString("Trip_name", trip.getTripName());
+                     editor.putString("Trip_context", trip.getNotes());
+                     editor.commit();
+
+                     Calendar cal = Calendar.getInstance();
+                               cal.setTimeInMillis(System.currentTimeMillis());
+                               cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip_hour));
+                              cal.set(Calendar.MINUTE, Integer.parseInt(trip_min));
+
+                     Intent intent = new Intent(getApplicationContext(), AlramReciver.class);
+                     PendingIntent pintent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+                     AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                     alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                             SystemClock.elapsedRealtime() +
+                                     60 * 1000, pintent);
+
+//
                     }
-
                 }
-
 
                 recyclerView.setLayoutManager(manger);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -170,27 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void start() {
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        int interval = 16000;
 
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
-        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
-        String dtStart = "2010-10-15T09:27:37Z";
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        try
-
-        {
-            Date date = format.parse(dtStart);
-            System.out.println(date);
-            Log.i("TAG","date"+date);
-        } catch(
-                ParseException e)
-
-        {
-            e.printStackTrace();
-        }
-    }
 
     public void cancel() {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
