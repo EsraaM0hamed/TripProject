@@ -16,10 +16,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -28,6 +32,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Main2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -37,22 +42,22 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
     EditText tripType;
     private Spinner spinner;
     String type;
-    private static final String[]paths = {"one Direction", "two Direction"};
+    private static final String[]paths = {"one Direction", "roundTrip"};
     static EditText DateEdit;    //TextClock tc;
     Button addTrip;
     Trip tr;
 
     private PlaceAutocompleteFragment autocompleteFragment;
     private PlaceAutocompleteFragment autocompleteFragment1;
-    int id=0;
     String start;
     String end;
+    CheckBox done;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main2);
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         ref = database.getReference("trips");
 
@@ -74,7 +79,6 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
             }
         });
         Notes=findViewById(R.id.Notes);
-        //tripType=findViewById(R.id.TripTye);
         addTrip=findViewById(R.id.AddTrip);
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.start);
@@ -84,18 +88,17 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-
                 System.out.print(place.getName().toString());
-
                 start=place.getName().toString();
             }
-
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
                 // Log.i(TAG, "An error occurred: " + status);
             }
         });
+
+
 
 
         autocompleteFragment1.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -121,34 +124,22 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
             @Override
 
             public void onClick(View view) {
-               /* if(tripName.getText().toString()==""){
-                    AlertDialog alertDialog = new AlertDialog.Builder(Main2Activity.this).create();
-                    alertDialog.setTitle("Alert");
-                    alertDialog.setMessage("Alert message to be shown");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-                }*/
-
-                tr=new Trip();
-                tr.setId(id++);
-                tr.setTripName(tripName.getText().toString());
-                tr.setTripType(type);
-                tr.setNotes(Notes.getText().toString());
-                tr.setStartPoint(start);
-                tr.setEndPoint(end);
-                tr.setDate(DateEdit.getText().toString());
-
-
-                ref.child(tripName.getText().toString()).setValue(tr);
-                ActivityCompat.finishAffinity(Main2Activity.this);
-                startActivity(intent);
-
-
+               if(tripName.getText().toString().isEmpty())
+               {
+                   Toast.makeText(Main2Activity.this, "empty", Toast.LENGTH_SHORT).show();
+               }
+                else  if(!(tripName.getText().toString().isEmpty())) {
+                   tr = new Trip();
+                 //  tr.setId(id++);
+                   tr.setTripName(tripName.getText().toString());
+                   tr.setTripType(type);
+                   tr.setNotes(Notes.getText().toString());
+                   tr.setStartPoint(start);
+                   tr.setEndPoint(end);
+                   tr.setDate(DateEdit.getText().toString());
+                   tr.setFlag(true);
+                   ref.child(tripName.getText().toString()).setValue(tr);
+               }
             }
 
         });
@@ -167,8 +158,7 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
                 type="oneDirection";
                 break;
             case 1:
-                // Whatever you want to happen when the second item gets selected
-                type="twoDirection";
+                type="round Trip";
                 break;
 
         }

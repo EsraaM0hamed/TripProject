@@ -11,7 +11,9 @@ public class Trip {
     private String notes;
     private String tripType;
     private String date;
-    private  int id;
+    private Boolean flag;
+    //private  int id;
+
 
     public Trip() {
 
@@ -26,15 +28,15 @@ public class Trip {
         this.endPoint = endPoint;
     }
 
-    public int getId() {
+    public Boolean getFlag(){
 
-        return id;
+        return flag;
     }
-    public void setId(int id) {
-       {
-            this.id = id;
+    public void setFlag(Boolean flag) {
+
+            this.flag = flag;
         }
-    }
+
 
 
     public String getTripName() {
