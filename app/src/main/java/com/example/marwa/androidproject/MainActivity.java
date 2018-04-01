@@ -126,12 +126,13 @@ boolean flag=false;
                                cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip_hour));
                               cal.set(Calendar.MINUTE, Integer.parseInt(trip_min));
 
-                     Intent intent = new Intent(getApplicationContext(), AlramReciver.class);
+                     Intent intent = new Intent(getApplicationContext(),AlramReciver.class );
                      PendingIntent pintent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
                      AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                      alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                              SystemClock.elapsedRealtime() +
                                      60 * 1000, pintent);
+
 
 //
                     }
