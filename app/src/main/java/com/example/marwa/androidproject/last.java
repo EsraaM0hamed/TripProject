@@ -1,6 +1,5 @@
 package com.example.marwa.androidproject;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,21 +8,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,11 +34,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-public class MainActivity extends AppCompatActivity {
+public class last extends AppCompatActivity {
     Intent intent;
     Intent n;
     Intent n1;
@@ -59,42 +51,42 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference ref;
     RecyclerView  recyclerView;
     RecyclerView.LayoutManager manger;
-    FirebaseDatabase database;
+    //FirebaseDatabase database;
     private PendingIntent pendingIntent;
-
-    static {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-    }
-
+Boolean flag=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-           Intent alarmIntent = new Intent(MainActivity.this, AlramReciver.class);
+           Intent alarmIntent = new Intent(last.this, AlramReciver.class);
         n=new Intent(this,comming.class);
         n1=new Intent(this,last.class);
         n2=new Intent(this,MainActivity.class);
 
-        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, 0);
+        pendingIntent = PendingIntent.getBroadcast(last.this, 0, alarmIntent, 0);
 
 
-        if(ref == null){
-            database = FirebaseDatabase.getInstance();//.setPersistenceEnabled(true);
+
+        FirebaseDatabase   database = FirebaseDatabase.getInstance();//.setPersistenceEnabled(true);
          //n   database.setPersistenceEnabled(true);
             ref = database.getReference();
-        }
-
 
         name=findViewById(R.id.tripname);
             // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        adapter = new TripAdapter(MainActivity.this,TripList);
-        manger = new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false);
-        ref.child("trips").addValueEventListener(new ValueEventListener() {
+        adapter = new TripAdapter(last.this,TripList);
+        manger = new LinearLayoutManager(last.this,LinearLayoutManager.VERTICAL,false);
+
+
+        final Query query = ref.child("trips").orderByChild("flag").equalTo(flag);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, dataSnapshot.getValue().toString());
-             TripList.clear();
+                if (dataSnapshot !=null) {
+                    Toast.makeText(last.this, dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+                }
+                TripList.clear();
+
 
                 //set alarm mnager take more than one alarm
                 AlarmManager[] alarmManager=new AlarmManager[24];

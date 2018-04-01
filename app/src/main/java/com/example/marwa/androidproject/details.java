@@ -143,6 +143,7 @@ public class details extends AppCompatActivity {
                     tr.setDate(date.getText().toString());
                     tr.setFlag(true);
                     ref.child(name.getText().toString()).setValue(tr);
+
                 }else{
                     flag=false;
                     DoneList.add(name.getText().toString());
