@@ -20,37 +20,33 @@
         android:text="tripName" />
 
     <EditText
-        android:id="@+id/tripName"
+        android:id="@+id/tripNameE"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView"
         android:layout_alignBottom="@+id/textView"
         android:layout_alignLeft="@+id/start"
         android:layout_alignStart="@+id/start"
         android:ems="10"
-        android:inputType="textPersonName" />
+         />
 
     <fragment
         android:id="@+id/start"
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_above="@+id/end"
         android:layout_alignLeft="@+id/end"
         android:layout_alignStart="@+id/end"
-        android:layout_below="@+id/tripName"
-        android:layout_marginTop="25dp" />
+        android:layout_marginBottom="23dp" />
 
     <fragment
         android:id="@+id/end"
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_above="@+id/Notes"
         android:layout_alignLeft="@+id/AddTrip"
-        android:layout_alignStart="@+id/AddTrip"
-        android:layout_below="@+id/start"
-        android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="12dp" />
+        android:layout_alignStart="@+id/AddTrip" />
 
     <TextView
         android:id="@+id/textView2"
@@ -59,6 +55,7 @@
         android:layout_alignBottom="@+id/start"
         android:layout_alignLeft="@+id/textView"
         android:layout_alignStart="@+id/textView"
+        android:layout_marginBottom="11dp"
         android:text="startPoint"
         tools:text="startPoint" />
 
@@ -66,7 +63,7 @@
         android:id="@+id/textView3"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/end"
+        android:layout_above="@+id/Notes"
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignStart="@+id/textView2"
         android:text="endpoint" />

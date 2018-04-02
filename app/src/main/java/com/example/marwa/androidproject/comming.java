@@ -53,7 +53,7 @@ public class comming extends AppCompatActivity {
     RecyclerView.LayoutManager manger;
     //FirebaseDatabase database;
     private PendingIntent pendingIntent;
-Boolean flag=true;
+Boolean flag=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,28 +83,19 @@ Boolean flag=true;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot !=null) {
-                    Toast.makeText(comming.this, dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(comming.this, dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
                 }
                 TripList.clear();
-
-
                 //set alarm mnager take more than one alarm
                 AlarmManager[] alarmManager=new AlarmManager[24];
                 ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
                 //**************
-
-
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Trip trip = snapshot.getValue(Trip.class);
                     TripList.add(trip);
                     adapter.notifyDataSetChanged();
-
-
                     if (trip.getDate() != null) {
-
-
                         for (int i = 0; i < DatesList.size(); i++) {
-
                             //split date
                             String[] separated = trip.getDate().split("-");
                             String trip_date = separated[0];

@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         ref.child("trips").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, dataSnapshot.getValue().toString());
+//                Log.i(TAG, dataSnapshot.getValue().toString());
              TripList.clear();
 
                 //set alarm mnager take more than one alarm

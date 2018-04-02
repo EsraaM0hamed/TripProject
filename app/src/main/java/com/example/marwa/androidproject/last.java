@@ -53,7 +53,7 @@ public class last extends AppCompatActivity {
     RecyclerView.LayoutManager manger;
     //FirebaseDatabase database;
     private PendingIntent pendingIntent;
-Boolean flag=false;
+Boolean flag=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
