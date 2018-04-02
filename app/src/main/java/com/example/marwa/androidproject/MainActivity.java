@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 boolean flag=false;
     TextView name,type;
     ArrayList<Trip> TripList = new ArrayList<>();
-    ArrayList<String> DatesList = new ArrayList<>();
+    ArrayList<Calendar> DatesList = new ArrayList<>();
     TripAdapter adapter;
     DatabaseReference ref;
     RecyclerView  recyclerView;
@@ -88,7 +88,7 @@ boolean flag=false;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Trip trip = snapshot.getValue(Trip.class);
                     TripList.add(trip);
-                    DatesList.add(trip.getDate());
+
                     adapter.notifyDataSetChanged();
 
 
@@ -123,18 +123,23 @@ boolean flag=false;
 
                      Calendar cal = Calendar.getInstance();
                                cal.setTimeInMillis(System.currentTimeMillis());
+
                                cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip_hour));
                               cal.set(Calendar.MINUTE, Integer.parseInt(trip_min));
 
-                     Intent intent = new Intent(getApplicationContext(),AlramReciver.class );
-                     PendingIntent pintent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
-                     AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                     alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                             SystemClock.elapsedRealtime() +
-                                     60 * 1000, pintent);
+
+                     // for(int i=0;i<DatesList.size();i++){}
+
+                         Intent intent = new Intent(getApplicationContext(),AlramReciver.class );
+                         PendingIntent pintent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+                         AlarmManager alarm= (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                         alarm.set(AlarmManager.RTC_WAKEUP,
+                                 cal.getTimeInMillis(), pintent);
 
 
-//
+
+
+
                     }
                 }
 

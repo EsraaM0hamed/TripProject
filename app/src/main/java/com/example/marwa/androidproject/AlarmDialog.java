@@ -78,6 +78,7 @@ boolean flag=false;
 
 
         AlertDialog alert = builder.create();
+
         try {
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
              r= RingtoneManager.getRingtone(this, notification);
@@ -109,10 +110,7 @@ boolean flag=false;
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
-
         int notificationId=1;
-
-
 
         notificationManager.notify(notificationId, builder.build());
 
