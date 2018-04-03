@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#64ffda"
     tools:context="com.example.marwa.androidproject.Main2Activity">
 
 
     <TextView
         android:id="@+id/textView"
+        style="@style/Widget.AppCompat.TextView.SpinnerItem"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,68 +19,74 @@
         android:layout_marginLeft="21dp"
         android:layout_marginStart="21dp"
         android:layout_marginTop="40dp"
-        android:text="tripName" />
+        android:text="tripName"
+        android:textColor="#004d40"
+        android:textColorLink="#004d40" />
 
     <EditText
-        android:id="@+id/tripName"
+        android:id="@+id/tripNameE"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView"
         android:layout_alignBottom="@+id/textView"
         android:layout_alignLeft="@+id/start"
         android:layout_alignStart="@+id/start"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:textColor="#004d40"/>
 
     <fragment
         android:id="@+id/start"
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_above="@+id/end"
         android:layout_alignLeft="@+id/end"
         android:layout_alignStart="@+id/end"
-        android:layout_below="@+id/tripName"
-        android:layout_marginTop="25dp" />
+        android:layout_marginBottom="23dp"
+        />
 
     <fragment
         android:id="@+id/end"
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_above="@+id/Notes"
         android:layout_alignLeft="@+id/AddTrip"
-        android:layout_alignStart="@+id/AddTrip"
-        android:layout_below="@+id/start"
-        android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="12dp" />
+        android:layout_alignStart="@+id/AddTrip" />
 
     <TextView
         android:id="@+id/textView2"
+        style="@style/Widget.AppCompat.TextView.SpinnerItem"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/start"
         android:layout_alignLeft="@+id/textView"
         android:layout_alignStart="@+id/textView"
+        android:layout_marginBottom="11dp"
         android:text="startPoint"
+        android:textColor="#004d40"
         tools:text="startPoint" />
 
     <TextView
         android:id="@+id/textView3"
+        style="@style/Widget.AppCompat.TextView.SpinnerItem"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/end"
+        android:layout_above="@+id/Notes"
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignStart="@+id/textView2"
-        android:text="endpoint" />
+        android:text="endpoint"
+        android:textColor="#004d40" />
 
     <TextView
         android:id="@+id/textView4"
+        style="@style/Widget.AppCompat.TextView.SpinnerItem"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/Notes"
         android:layout_alignLeft="@+id/textView3"
         android:layout_alignStart="@+id/textView3"
-        android:text="Notes" />
+        android:text="Notes"
+        android:textColor="#004d40" />
 
     <EditText
         android:id="@+id/Notes"
@@ -88,35 +96,46 @@
         android:layout_alignStart="@+id/end"
         android:layout_centerVertical="true"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textColor="#004d40"/>
 
     <TextView
         android:id="@+id/textView5"
+        style="@style/Widget.AppCompat.TextView.SpinnerItem"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/spinner"
         android:layout_alignLeft="@+id/textView4"
         android:layout_alignStart="@+id/textView4"
         android:layout_marginBottom="14dp"
-        android:text="TripType" />
+        android:text="TripType"
+        android:textColor="#004d40" />
 
     <Button
         android:id="@+id/AddTrip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Done" />
+        android:layout_marginBottom="13dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginStart="37dp"
+        android:layout_toEndOf="@+id/textView5"
+        android:layout_toRightOf="@+id/textView5"
+
+        android:background="@mipmap/checke"
+        android:text="" />
 
     <TextView
         android:id="@+id/textView8"
+        style="@style/Widget.AppCompat.TextView.SpinnerItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/AddTrip"
         android:layout_alignLeft="@+id/textView5"
         android:layout_alignStart="@+id/textView5"
         android:layout_marginBottom="44dp"
-        android:text="dateTime" />
+        android:text="dateTime"
+        android:textColor="#004d40" />
 
     <EditText
         android:id="@+id/editText6"
@@ -128,7 +147,8 @@
         android:layout_alignRight="@+id/spinner"
         android:layout_alignStart="@+id/spinner"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textColor="#004d40" />
 
     <Spinner
         android:id="@+id/spinner"

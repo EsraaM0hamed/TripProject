@@ -78,7 +78,7 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
                 showTruitonDatePickerDialog(v);
             }
         });
-        Notes=findViewById(R.id.Notes);
+        Notes=findViewById(R.id.notes);
         addTrip=findViewById(R.id.AddTrip);
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.start);

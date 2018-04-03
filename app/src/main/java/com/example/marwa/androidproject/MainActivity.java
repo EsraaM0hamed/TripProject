@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         ref.child("trips").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, dataSnapshot.getValue().toString());
+//                Log.i(TAG, dataSnapshot.getValue().toString());
              TripList.clear();
 
                 //set alarm mnager take more than one alarm
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                             //if (s.equals(trip_date)) {
 
 
-                            int interval = 1000 * 60 * 30;
+
                             Calendar calendar2 = Calendar.getInstance();
                             calendar2.setTimeInMillis(System.currentTimeMillis());
 //                          calendar2.set(Calendar.DAY_OF_MONTH, Integer.parseInt(trip_day));
@@ -162,8 +162,7 @@ public class MainActivity extends AppCompatActivity {
                             PendingIntent mypendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent, 0);
 
                             alarmManager[i] = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                            alarmManager[i].setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
-                                    interval, mypendingIntent);
+                            alarmManager[i].set(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), mypendingIntent);
 
                             intentArray.add(mypendingIntent);
                         }

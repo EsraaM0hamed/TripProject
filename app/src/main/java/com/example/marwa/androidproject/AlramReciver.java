@@ -30,42 +30,13 @@ public class AlramReciver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-//
 
-        SharedPreferences prefs =context.getSharedPreferences(PREFS_NAME, context.MODE_PRIVATE);
-
-
-        trip_name = prefs.getString("Trip_name","no trip name");
-        trip_note = prefs.getString("Trip_context","no detail");
+        Intent trIntent = new Intent("android.intent.action.MAIN");
+        trIntent.setClass(context, com.example.marwa.androidproject.AlarmDialog.class);
+        trIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(trIntent);
 
 
-        Toast.makeText(context, trip_name+" "+trip_note, Toast.LENGTH_SHORT).show();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setContentTitle(trip_name);
-        builder.setContentText(trip_note);
-        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        builder.setContentIntent(pendingIntent);
-        builder.setAutoCancel(true);
-
-
-        builder.addAction(R.mipmap.ic_launcher, "Ok",
-                pendingIntent);
-        builder.addAction(R.mipmap.ic_launcher, "Later",
-                pendingIntent);
-        builder.addAction(R.mipmap.ic_launcher, "Cancel",
-                pendingIntent);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        int notificationId = 1;
-        try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            Ringtone r = RingtoneManager.getRingtone(context, notification);
-            r.play();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        notificationManager.notify(notificationId, builder.build());
 
 
 
