@@ -1,17 +1,23 @@
 package com.example.marwa.androidproject;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -29,13 +36,22 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 
-public class Main2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+import static android.content.ContentValues.TAG;
+
+public class Edit extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     DatabaseReference ref;
     EditText tripName;
     EditText Notes;
@@ -51,26 +67,64 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
     private PlaceAutocompleteFragment autocompleteFragment1;
     String start;
     String end;
+    String name;
+    String note;
     CheckBox done;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_edit);
+
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         ref = database.getReference("trips");
+        tripName=(EditText)findViewById(R.id.tripNameE);
+        DateEdit=findViewById(R.id.editText6);
+        Notes=findViewById(R.id.Notes);
+        addTrip=findViewById(R.id.AddTrip);
+
+
+        final String editTxt= getIntent().getStringExtra("edit");
+//        Toast.makeText(this, tr.getTripName(), Toast.LENGTH_SHORT).show();
+        final Query query = ref.orderByChild("tripName").equalTo(editTxt);
+        //tripName.setText(editTxt.toString());
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    tr = snapshot.getValue(Trip.class);//.notifyDataSetChanged();
+                    //Toast.makeText(Edit.this, tr.getTripName(), Toast.LENGTH_SHORT).show();
+
+                    name=tr.getTripName();
+                    tripName.setText(name!= null? name:"null");
+                    tripName.setEnabled(false);
+                    note=tr.getNotes();
+                  Notes.setText(note != null?tr.getNotes():"null");
+                    DateEdit.setText(tr.getDate());
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.i(TAG, "onCancelled: cancel");
+
+            }
+        });
 
         spinner = (Spinner)findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Main2Activity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Edit.this,
                 android.R.layout.simple_spinner_item,paths);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
         //ref.child("test").setValue(1);
-        tripName=findViewById(R.id.tripName);
-        DateEdit=findViewById(R.id.editText6);
+
         DateEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,8 +132,7 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
                 showTruitonDatePickerDialog(v);
             }
         });
-        Notes=findViewById(R.id.notes);
-        addTrip=findViewById(R.id.AddTrip);
+
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.start);
         autocompleteFragment1 = (PlaceAutocompleteFragment)
@@ -107,7 +160,7 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
                 // TODO: Get info about the selected place.
                 // Log.i(TAG, "Place: " + place.getName());
                 end=place.getName().toString();
-               // Toast.makeText(Main2Activity.this, place.getName(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Main2Activity.this, place.getName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -116,30 +169,38 @@ public class Main2Activity extends AppCompatActivity implements AdapterView.OnIt
                 // Log.i(TAG, "An error occurred: " + status);
             }
         });
-
-
-
-        final Intent intent=new Intent(this,MainActivity.class);
         addTrip.setOnClickListener(new View.OnClickListener() {
             @Override
 
             public void onClick(View view) {
-               if(tripName.getText().toString().isEmpty())
-               {
-                   Toast.makeText(Main2Activity.this, "empty", Toast.LENGTH_SHORT).show();
-               }
+                if(tripName.getText().toString().isEmpty())
+                {
+                    Toast.makeText(Edit.this, "empty", Toast.LENGTH_SHORT).show();
+                }
                 else  if(!(tripName.getText().toString().isEmpty())) {
-                   tr = new Trip();
-                 //  tr.setId(id++);
-                   tr.setTripName(tripName.getText().toString());
-                   tr.setTripType(type);
-                   tr.setNotes(Notes.getText().toString());
-                   tr.setStartPoint(start);
-                   tr.setEndPoint(end);
-                   tr.setDate(DateEdit.getText().toString());
-                   tr.setFlag(true);
-                   ref.child(tripName.getText().toString()).setValue(tr);
-               }
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                tr = snapshot.getValue(Trip.class);//.notifyDataSetChanged();
+                               // tripName.setText(tr.getTripName());
+                                tr.setNotes(Notes.getText().toString());
+                                tr.setDate(DateEdit.getText().toString());
+
+
+
+                            }
+                            ref.child(editTxt).setValue(tr);
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.i(TAG, "onCancelled: cancel");
+
+                         }
+                    });
+                }
             }
 
         });

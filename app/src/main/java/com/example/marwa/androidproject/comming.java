@@ -1,6 +1,5 @@
 package com.example.marwa.androidproject;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,21 +8,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,11 +34,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-public class MainActivity extends AppCompatActivity {
+public class comming extends AppCompatActivity {
     Intent intent;
     Intent n;
     Intent n1;
@@ -59,115 +51,52 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference ref;
     RecyclerView  recyclerView;
     RecyclerView.LayoutManager manger;
-    FirebaseDatabase database;
+    //FirebaseDatabase database;
     private PendingIntent pendingIntent;
-
-    static {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-    }
-
+Boolean flag=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-           Intent alarmIntent = new Intent(MainActivity.this, AlramReciver.class);
+           Intent alarmIntent = new Intent(comming.this, AlramReciver.class);
         n=new Intent(this,comming.class);
         n1=new Intent(this,last.class);
         n2=new Intent(this,MainActivity.class);
 
-        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, 0);
+        pendingIntent = PendingIntent.getBroadcast(comming.this, 0, alarmIntent, 0);
 
 
-        if(ref == null){
-            database = FirebaseDatabase.getInstance();//.setPersistenceEnabled(true);
+
+        FirebaseDatabase   database = FirebaseDatabase.getInstance();//.setPersistenceEnabled(true);
          //n   database.setPersistenceEnabled(true);
             ref = database.getReference();
-        }
-
 
         name=findViewById(R.id.tripname);
             // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        adapter = new TripAdapter(MainActivity.this,TripList);
-        manger = new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false);
-        ref.child("trips").addValueEventListener(new ValueEventListener() {
+        adapter = new TripAdapter(comming.this,TripList);
+        manger = new LinearLayoutManager(comming.this,LinearLayoutManager.VERTICAL,false);
+
+
+        final Query query = ref.child("trips").orderByChild("flag").equalTo(flag);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.i(TAG, dataSnapshot.getValue().toString());
-             TripList.clear();
-
+                if (dataSnapshot !=null) {
+                //    Toast.makeText(comming.this, dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+                }
+                TripList.clear();
                 //set alarm mnager take more than one alarm
                 AlarmManager[] alarmManager=new AlarmManager[24];
                 ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
                 //**************
-
-
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Trip trip = snapshot.getValue(Trip.class);
                     TripList.add(trip);
                     adapter.notifyDataSetChanged();
 
 
-                    if (trip.getDate() != null) {
 
-
-                        for (int i = 0; i < DatesList.size(); i++) {
-
-                            //split date
-                            String[] separated = trip.getDate().split("-");
-                            String trip_date = separated[0];
-                            String trip_time = separated[1];
-                            String[] time_seperated = trip_time.split(":");
-                            String[] date_seperated = trip_date.split("/");
-                            String trip_day = date_seperated[0];
-                            String trip_month = date_seperated[1];
-                            String trip_year = date_seperated[2];
-
-                            String trip_hour = time_seperated[0];
-                            String trip_min = time_seperated[1];
-
-
-                            //to get time now
-                            DateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy");
-                            Date date = new Date();
-                            //System.out.println(dateFormat.format(date));
-                            DateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-                            Date strDate = null;
-                            Calendar calendar = Calendar.getInstance();
-                            int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-                            int minOfDay = calendar.get(Calendar.MINUTE);
-
-                            String s = dateFormat.format(date).toString();
-
-                            //if (s.equals(trip_date)) {
-
-
-
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTimeInMillis(System.currentTimeMillis());
-//                          calendar2.set(Calendar.DAY_OF_MONTH, Integer.parseInt(trip_day));
-//                          calendar2.set(Calendar.MONTH, Integer.parseInt(trip_month));
-//                          calendar2.set(Calendar.YEAR, Integer.parseInt(trip_year));
-                            calendar2.set(Calendar.HOUR_OF_DAY,Integer.parseInt(trip_hour));
-                            calendar2.set(Calendar.MINUTE, Integer.parseInt(trip_min));
-                            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-                            editor.putString("Trip_name", trip.getTripName());
-                            editor.putString("Trip_context", trip.getNotes());
-                            editor.commit();
-
-
-
-
-                            Intent myIntent = new Intent(getApplicationContext(), AlramReciver.class);
-                            PendingIntent mypendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent, 0);
-
-                            alarmManager[i] = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                            alarmManager[i].set(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), mypendingIntent);
-
-                            intentArray.add(mypendingIntent);
-                        }
-
-                    }
                 }
 
                 recyclerView.setLayoutManager(manger);

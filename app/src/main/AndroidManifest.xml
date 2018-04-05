@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.marwa.androidproject">
 
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -12,23 +13,54 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/icon2"
+        android:label="Mashaweri"
+        android:roundIcon="@mipmap/icon2"
         android:supportsRtl="true"
+        android:screenOrientation="portrait"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDRFkZKJI2Y2sQTNlUa4Qyp4oOJ9X7TTsE" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main2Activity"></activity>
+
+        <receiver android:name=".AlramReciver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Will not be called unless the application explicitly enables it -->
+        <receiver android:name=".DeviceBroadcastReciver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+
+
+        <activity android:name=".AlarmDialog"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert"
+            android:launchMode="singleInstance"
+
+            />
+        <activity android:name=".Main2Activity"  android:screenOrientation="portrait"/>
+        <activity android:name=".details" android:screenOrientation="portrait" />
+        <activity android:name=".comming"  android:screenOrientation="portrait"></activity>
+        <activity android:name=".last"  android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".Edit"  android:screenOrientation="portrait"></activity>
+
     </application>
 
 </manifest>

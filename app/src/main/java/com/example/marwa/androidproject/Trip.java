@@ -11,8 +11,12 @@ public class Trip {
     private String notes;
     private String tripType;
     private String date;
+    private Boolean flag;
+    //private  int id;
+
 
     public Trip() {
+
     }
 
     public Trip(String tripName, String tripType, String date,String notes,String startPoint,String endPoint) {
@@ -24,12 +28,23 @@ public class Trip {
         this.endPoint = endPoint;
     }
 
+    public Boolean getFlag(){
+
+        return flag;
+    }
+    public void setFlag(Boolean flag) {
+
+            this.flag = flag;
+        }
+
+
+
     public String getTripName() {
 
         return tripName;
     }
     public void setTripName(String name) {
-        if(name!=null) {
+        if(name!="") {
             this.tripName = name;
         }
     }
