@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
                             editor.putString("Trip_name", trip.getTripName());
                             editor.putString("Trip_context", trip.getNotes());
-                            editor.commit();
+                            editor.commit();    
 
 
 
